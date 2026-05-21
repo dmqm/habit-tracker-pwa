@@ -2,19 +2,17 @@
 
 importScripts('sw-precache.js');
 
-const CACHE_NAME = 'habit-tracker-cache-v17';
+const CACHE_NAME = 'habit-tracker-cache-v18';
 
 const DEFAULT_PRECACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
+  './',
+  './index.html',
   './manifest.json',
-  'sw.js',
   './sw.js',
-  'sw-precache.js',
-  '/assets/icons/badge.png',
-  '/assets/icons/icon-192x192.png',
-  '/assets/icons/icon-512x512.png',
+  './sw-precache.js',
+  './assets/icons/badge.png',
+  './assets/icons/icon-192x192.png',
+  './assets/icons/icon-512x512.png',
 ];
 
 const PRECACHE_URLS = Array.isArray(self.PRECACHE_URLS) && self.PRECACHE_URLS.length > 0
@@ -22,6 +20,10 @@ const PRECACHE_URLS = Array.isArray(self.PRECACHE_URLS) && self.PRECACHE_URLS.le
   : DEFAULT_PRECACHE;
 
 const CACHE_ONLY = self.OFFLINE_CACHE_ONLY === true;
+
+function resolveUrl(url) {
+  return new URL(url, self.registration.scope).href;
+}
 
 function pathKeys(url) {
   const u = new URL(url, self.location.origin);
@@ -42,7 +44,7 @@ async function putInCache(cache, request, response) {
 }
 
 async function cacheUrl(cache, url) {
-  const absolute = new URL(url, self.location.origin).href;
+  const absolute = resolveUrl(url);
   try {
     const response = await fetch(absolute, { cache: 'reload' });
     await putInCache(cache, absolute, response);
@@ -53,16 +55,15 @@ async function cacheUrl(cache, url) {
 
 async function hasCriticalShell(cache) {
   const tryUrls = [
-    '/index.html', '/',
-    self.location.origin + '/index.html',
-    self.location.origin + '/',
+    './index.html', './',
   ];
 
   for (const u of tryUrls) {
-    const htmlRes = await cache.match(u);
-    if (!htmlRes) continue;
-    const html = await htmlRes.text();
-    if (html.includes('id="app"') && html.length > 8000) return true;
+    const hit = await cache.match(resolveUrl(u));
+    if (hit) {
+      const html = await hit.text();
+      if (html.includes('id="app"') && html.length > 8000) return true;
+    }
   }
 
   const keys = await cache.keys();
@@ -78,7 +79,7 @@ async function hasCriticalShell(cache) {
 
 async function precacheAll() {
   const cache = await caches.open(CACHE_NAME);
-  const urls = [...new Set(PRECACHE_URLS.map((u) => new URL(u, self.location.origin).href))];
+  const urls = [...new Set(PRECACHE_URLS.map(resolveUrl))];
   await Promise.allSettled(urls.map((url) => cacheUrl(cache, url)));
   return hasCriticalShell(cache);
 }
@@ -138,7 +139,7 @@ async function matchCached(cache, request) {
   }
 
   if (request.mode === 'navigate' || request.destination === 'document') {
-    return matchCached(cache, new Request(self.location.origin + '/index.html'));
+    return matchCached(cache, new Request(resolveUrl('./index.html')));
   }
 
   return null;
