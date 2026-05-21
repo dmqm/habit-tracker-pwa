@@ -3,7 +3,7 @@
 import { store } from './store.js';
 import { getSwRegistration } from './offline-shell.js';
 
-const APP_ICON = '/assets/icons/icon-192x192.png';
+const APP_ICON = './assets/icons/icon-192x192.png';
 
 let deferredInstallPrompt = null;
 
@@ -167,7 +167,7 @@ export const pwa = {
         reg.showNotification('小日常打卡开启成功！', {
           body: '每天我都会按时提醒您进行习惯打卡哦 🌱',
           icon: APP_ICON,
-          badge: '/assets/icons/badge.png',
+          badge: './assets/icons/badge.png',
           vibrate: [200, 100, 200],
           tag: 'habit-welcome',
           renotify: true

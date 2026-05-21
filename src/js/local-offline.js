@@ -2,22 +2,30 @@
  * 纯本地离线：Cache + IndexedDB 双份壳备份，兼容不同浏览器的 Cache 键名
  */
 
-export const CACHE_NAME = 'habit-tracker-cache-v17';
+export const CACHE_NAME = 'habit-tracker-cache-v18';
 const IDB_NAME = 'habit-tracker-offline';
 const IDB_STORE = 'shell';
 const IDB_KEY = 'index.html';
 
-const SHELL_PATHS = ['/', '/index.html'];
+const SHELL_PATHS = ['./', './index.html'];
+
+function scopeBase() {
+  return new URL('.', location.href).href;
+}
+
+function resolveUrl(path) {
+  return new URL(path, scopeBase()).href;
+}
 
 function shellUrls() {
-  const origin = location.origin;
-  return [
-    ...SHELL_PATHS,
-    `${origin}/`,
-    `${origin}/index.html`,
-    new URL('/', location.href).href,
-    new URL('/index.html', location.href).href,
-  ];
+  const base = scopeBase();
+  const urls = [];
+  for (const p of SHELL_PATHS) {
+    const u = new URL(p, base);
+    urls.push(u.href, u.pathname);
+  }
+  urls.push(new URL('/', base).origin + '/');
+  return urls;
 }
 
 async function matchInCache(cache, urls) {
@@ -31,10 +39,12 @@ async function matchInCache(cache, urls) {
   }
 
   try {
+    const indexPath = resolveUrl('./index.html');
+    const rootPath = resolveUrl('./');
     const keys = await cache.keys();
     for (const req of keys) {
-      const path = new URL(req.url).pathname;
-      if (path === '/index.html' || path === '/') {
+      const url = req.url;
+      if (url === indexPath || url === rootPath) {
         const hit = await cache.match(req);
         if (hit) return hit;
       }
@@ -58,9 +68,10 @@ export async function verifyAppShellCached() {
     }
 
     const html = await htmlRes.text();
-    const jsRef = html.match(/src="(\/assets\/index-[^"]+\.js)"/);
+    const jsRef = html.match(/src="(\.\/assets\/index-[^"]+\.js)"/);
     if (jsRef) {
-      return !!(await cache.match(jsRef[1]));
+      const jsUrl = resolveUrl(jsRef[1]);
+      return !!(await cache.match(jsUrl) || await cache.match(new URL(jsUrl).pathname));
     }
 
     return html.includes('id="app"') && html.length > 8000;
@@ -141,7 +152,9 @@ export async function warmAppShellCache() {
           await cache.put(url, res.clone());
           const path = new URL(url).pathname;
           if (path) await cache.put(path, res.clone());
-          if (path === '/index.html' || path === '/') ok = true;
+          const indexPath = resolveUrl('./index.html');
+          const rootPath = resolveUrl('./');
+          if (url === indexPath || url === rootPath || path === new URL(indexPath).pathname || path === new URL(rootPath).pathname) ok = true;
         } catch {
           /* 离线时 fetch 失败，忽略 */
         }
