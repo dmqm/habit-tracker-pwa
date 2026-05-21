@@ -1,0 +1,1000 @@
+/* 组件样式系统 */
+
+/* 1. 基础卡片与玻璃卡片 */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-effect);
+  -webkit-backdrop-filter: var(--glass-effect);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-glass);
+  margin-bottom: var(--spacing-md);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.glass-card:active {
+  transform: scale(0.99);
+}
+
+/* 2. 周日期选择器 (Weekly Strip) */
+.week-strip {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 12px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.day-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 0;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.day-card .day-name {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.day-card .day-number {
+  font-size: 1.05rem;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+/* 选中的日期 */
+.day-card.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.day-card.active .day-name {
+  color: var(--bg-app);
+}
+
+.day-card.active .day-number {
+  color: var(--bg-app);
+}
+
+/* 今日标记 */
+.day-card.today:not(.active) .day-number {
+  background: var(--border-glass-active);
+  color: var(--text-primary);
+}
+
+/* 打卡完成指示点 */
+.day-dot {
+  width: 5px;
+  height: 5px;
+  background-color: var(--color-success);
+  border-radius: var(--radius-full);
+  margin-top: 4px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all var(--transition-fast);
+}
+
+.day-card.completed .day-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 3. 分组习惯列表 */
+.habit-group-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 12px 0 6px 4px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.habit-group-title svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-muted);
+}
+
+.habit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 4. 习惯打卡卡片 (Habit Card) */
+.habit-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  position: relative;
+  overflow: hidden;
+  border-left-width: 4px; /* 左侧主题色条 */
+}
+
+/* 动态设置习惯卡片的边框色 */
+.habit-card[data-theme-color="green"] { border-left-color: var(--color-theme-green); }
+.habit-card[data-theme-color="orange"] { border-left-color: var(--color-theme-orange); }
+.habit-card[data-theme-color="purple"] { border-left-color: var(--color-theme-purple); }
+.habit-card[data-theme-color="blue"] { border-left-color: var(--color-theme-blue); }
+.habit-card[data-theme-color="pink"] { border-left-color: var(--color-theme-pink); }
+.habit-card[data-theme-color="lime"] { border-left-color: var(--color-theme-lime); }
+
+.habit-card-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+/* 环形打卡按钮 */
+.check-button-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.check-circle-bg {
+  fill: none;
+  stroke: var(--border-glass-active);
+  stroke-width: 3.5;
+}
+
+.check-circle-fill {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 107; /* 2 * PI * r (r=17) -> approx 107 */
+  stroke-dashoffset: 107;
+  transition: stroke-dashoffset var(--transition-spring);
+}
+
+/* 完成打卡颜色填充 */
+[data-theme-color="green"] .check-circle-fill { stroke: var(--color-theme-green); }
+[data-theme-color="orange"] .check-circle-fill { stroke: var(--color-theme-orange); }
+[data-theme-color="purple"] .check-circle-fill { stroke: var(--color-theme-purple); }
+[data-theme-color="blue"] .check-circle-fill { stroke: var(--color-theme-blue); }
+[data-theme-color="pink"] .check-circle-fill { stroke: var(--color-theme-pink); }
+[data-theme-color="lime"] .check-circle-fill { stroke: var(--color-theme-lime); }
+
+/* 图标容器 */
+.habit-icon-container {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-spring), opacity var(--transition-fast);
+}
+
+.habit-icon-container svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--text-secondary);
+  fill: none;
+  transition: stroke var(--transition-fast), transform var(--transition-fast);
+}
+
+/* 完成打卡时的勾选图标 */
+.checkmark-icon {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  stroke: var(--bg-app);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: transform var(--transition-spring), opacity var(--transition-fast);
+  z-index: 2;
+}
+
+/* 选中状态动画 */
+.habit-card.checked .check-circle-fill {
+  stroke-dashoffset: 0;
+}
+
+.habit-card.checked .check-svg {
+  animation: pulse 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 完成打卡时，将习惯图标替换为对勾 */
+.habit-card.checked .habit-icon-container {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.habit-card.checked .checkmark-icon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 按钮内部整体圆圈变色 */
+.check-button-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-full);
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: transform var(--transition-spring), opacity var(--transition-fast);
+}
+
+[data-theme-color="green"] .check-button-wrapper::after { background: var(--color-theme-green); }
+[data-theme-color="orange"] .check-button-wrapper::after { background: var(--color-theme-orange); }
+[data-theme-color="purple"] .check-button-wrapper::after { background: var(--color-theme-purple); }
+[data-theme-color="blue"] .check-button-wrapper::after { background: var(--color-theme-blue); }
+[data-theme-color="pink"] .check-button-wrapper::after { background: var(--color-theme-pink); }
+[data-theme-color="lime"] .check-button-wrapper::after { background: var(--color-theme-lime); }
+
+.habit-card.checked .check-button-wrapper::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 文本区域 */
+.habit-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.habit-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  transition: all var(--transition-normal);
+}
+
+.habit-quote {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* 已完成打卡的卡片视觉变淡 */
+.habit-card.checked .habit-title {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* 右侧连续打卡天数 */
+.habit-streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.habit-streak svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-muted);
+  fill: none;
+  transition: fill var(--transition-fast), stroke var(--transition-fast);
+}
+
+/* 打卡后火焰点亮 */
+.habit-card.checked .habit-streak {
+  color: var(--color-theme-orange);
+}
+.habit-card.checked .habit-streak svg {
+  stroke: var(--color-theme-orange);
+  fill: var(--color-theme-orange);
+}
+
+/* 卡片右侧动作按钮 */
+.habit-card-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.habit-info-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: all var(--transition-normal);
+}
+
+.habit-card:hover .habit-info-btn,
+.habit-card:active .habit-info-btn,
+.habit-info-btn.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.habit-info-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-muted);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* 5. 模态框 / 底部抽屉 (Modals) */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 85%;
+  background: var(--bg-panel);
+  backdrop-filter: var(--glass-effect);
+  -webkit-backdrop-filter: var(--glass-effect);
+  border-top: 1px solid var(--border-glass);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 201;
+  transform: translateY(100%);
+  transition: transform var(--transition-spring);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg) var(--spacing-lg) calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+
+.modal-overlay.active .modal-container {
+  transform: translateY(0);
+}
+
+/* 模态框页眉 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--border-glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modal-close-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--text-primary);
+}
+
+/* 表单字段样式 */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: 0.5px;
+}
+
+.glass-input {
+  width: 100%;
+  padding: 12px var(--spacing-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.glass-input:focus {
+  border-color: var(--border-glass-active);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* 网格选择项 (颜色和图标) */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.color-option {
+  height: 40px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.color-option svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--bg-app);
+  stroke-width: 3;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all var(--transition-fast);
+}
+
+.color-option.selected {
+  transform: scale(1.1);
+  border-color: var(--text-primary);
+}
+
+.color-option.selected svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.color-option[data-color="green"] { background: var(--color-theme-green); }
+.color-option[data-color="orange"] { background: var(--color-theme-orange); }
+.color-option[data-color="purple"] { background: var(--color-theme-purple); }
+.color-option[data-color="blue"] { background: var(--color-theme-blue); }
+.color-option[data-color="pink"] { background: var(--color-theme-pink); }
+.color-option[data-color="lime"] { background: var(--color-theme-lime); }
+
+/* 图标网格 */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  max-height: 130px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.icon-option {
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.icon-option svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+}
+
+.icon-option.selected {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.icon-option.selected svg {
+  stroke: var(--bg-app);
+}
+
+/* 分类/时间段切换 (Time segment selection) */
+.segment-control {
+  display: flex;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+}
+
+.segment-item {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: calc(var(--radius-md) - 2px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.segment-item.active {
+  background: var(--text-primary);
+  color: var(--bg-app);
+}
+
+/* 周期频率选择项 */
+.day-selector {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.day-select-btn {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.day-select-btn.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-app);
+}
+
+/* 表单提交与动作按钮 */
+.btn-primary {
+  width: 100%;
+  padding: 14px 0;
+  background: var(--text-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--bg-app);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.btn-danger-outline {
+  width: 100%;
+  padding: 12px 0;
+  background: transparent;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-md);
+  color: var(--color-danger);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: var(--spacing-md);
+  transition: all var(--transition-fast);
+}
+
+.btn-danger-outline:active {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(0.98);
+}
+
+/* 6. 统计面板页面组件 */
+.stats-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 14px;
+}
+
+.stat-box-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.stat-box-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* 环形进度组件 */
+.progress-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+  position: relative;
+}
+
+.progress-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-center-val {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.progress-center-lbl {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* 7. GitHub 风格打卡热力图 (Contribution Heatmap) */
+.heatmap-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heatmap-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+.heatmap-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin-bottom: var(--spacing-sm);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.heatmap-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.heatmap-grid {
+  display: grid;
+  /* 30天(5r×7c) 和 90天(7r×13c) 两种布局分别通过 JS 设置 CSS 变量切换 */
+  grid-template-columns: repeat(var(--num-cols, 13), 1fr);
+  grid-template-rows: repeat(var(--num-rows, 7), 1fr);
+  gap: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.heatmap-cell {
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1; /* 强制保持完美正方形，自适应宽度 */
+  border-radius: 3px;
+  background: var(--border-glass);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  position: relative;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.15);
+  z-index: 5;
+}
+
+/* 热力图打卡密集度颜色 */
+.heatmap-cell[data-level="0"] { background: var(--border-glass); }
+.heatmap-cell[data-level="1"] { background: rgba(16, 185, 129, 0.2); }
+.heatmap-cell[data-level="2"] { background: rgba(16, 185, 129, 0.45); }
+.heatmap-cell[data-level="3"] { background: rgba(16, 185, 129, 0.7); }
+.heatmap-cell[data-level="4"] { background: rgba(16, 185, 129, 0.95); }
+
+/* 新增：热力图卡片内部标题与布局 */
+.heatmap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.heatmap-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.heatmap-title-icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-secondary);
+}
+
+/* 新增：过滤筛选器包裹器及边缘淡出效果 */
+.heatmap-filter-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 16px;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 12px, black calc(100% - 12px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12px, black calc(100% - 12px), transparent 100%);
+}
+
+.heatmap-segment {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+  gap: 2px;
+}
+
+/* 覆盖默认 segment，将习惯筛选变为滑动的 Chips Pills 样式 */
+.heatmap-habit-segment {
+  background: transparent;
+  border: none;
+  padding: 2px 0;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  width: 100%;
+}
+
+.heatmap-habit-segment::-webkit-scrollbar {
+  display: none;
+}
+
+.heatmap-time-segment {
+  flex-shrink: 0;
+}
+
+.heatmap-segment .segment-item {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-secondary);
+  border-radius: calc(var(--radius-sm) - 1px);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  max-width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.heatmap-habit-segment .segment-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  max-width: 10rem;
+}
+
+.heatmap-segment .segment-item.active {
+  background: var(--text-primary);
+  color: var(--bg-app);
+}
+
+.heatmap-habit-segment .segment-item.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
+}
+
+/* 悬浮气泡 */
+.heatmap-cell:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border-glass);
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* 8. 悬浮添加按钮 (Floating Add Button) */
+.fab-btn {
+  position: absolute;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  right: var(--spacing-lg);
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background: var(--text-primary);
+  color: var(--bg-app);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 90;
+  transition: transform var(--transition-spring), background-color var(--transition-fast);
+}
+
+.fab-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--bg-app);
+  stroke-width: 2.5;
+}
+
+.fab-btn:active {
+  transform: scale(0.9) rotate(90deg);
+}
+
+.app-logo-preview {
+  display: block;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 6px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* 9. 设置页组件 */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-item-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.settings-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* 开关组件 (Toggle Switch) */
+.switch-btn {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  background: var(--border-glass-active);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.switch-btn::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: white;
+  transition: transform var(--transition-spring);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switch-btn.active {
+  background: var(--color-success);
+}
+
+.switch-btn.active::after {
+  transform: translateX(20px);
+}
+
+.btn-secondary {
+  padding: 8px 16px;
+  background: var(--border-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:active {
+  background: var(--border-glass-active);
+}

@@ -1,0 +1,96 @@
+/* 设计系统变量与设计标记 (Design Tokens) */
+
+:root {
+  /* 字体系统 */
+  --font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* HSL 色彩基础值 */
+  --hue-green: 150;
+  --hue-orange: 20;
+  --hue-purple: 270;
+  --hue-blue: 200;
+  --hue-pink: 330;
+  --hue-lime: 80;
+
+  /* 习惯专属色彩（亮暗共用/动态调整） */
+  --color-theme-green: hsl(var(--hue-green), 85%, 45%);
+  --color-theme-orange: hsl(var(--hue-orange), 95%, 55%);
+  --color-theme-purple: hsl(var(--hue-purple), 85%, 60%);
+  --color-theme-blue: hsl(var(--hue-blue), 90%, 50%);
+  --color-theme-pink: hsl(var(--hue-pink), 85%, 60%);
+  --color-theme-lime: hsl(var(--hue-lime), 85%, 45%);
+
+  /* 动画与过渡 */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* 布局间距与圆角 */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* 深色模式变量（默认） */
+:root, [data-theme="dark"] {
+  --bg-app: #08090d; /* 极深太空黑/蓝 */
+  --bg-card: rgba(20, 21, 28, 0.6); /* 半透明磨砂卡片 */
+  --bg-card-solid: #14151c; /* 纯色备用 */
+  --bg-panel: rgba(13, 14, 19, 0.85); /* 底部弹窗和侧栏 */
+  --border-glass: rgba(255, 255, 255, 0.08); /* 极细磨砂描边 */
+  --border-glass-active: rgba(255, 255, 255, 0.2);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --shadow-glow: 0 0 20px rgba(255, 255, 255, 0.05);
+  
+  /* 文本颜色 */
+  --text-primary: #f3f4f6; /* 近纯白 */
+  --text-secondary: #9ca3af; /* 中灰色 */
+  --text-muted: #6b7280; /* 暗灰色 */
+  --text-inverse: #090a0f;
+  
+  /* 其他辅助色 */
+  --color-active: #ffffff;
+  --color-danger: #ef4444;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  
+  /* 玻璃模糊效果 */
+  --blur-amount: 20px;
+  --glass-effect: saturate(180%) blur(var(--blur-amount));
+}
+
+/* 浅色模式变量 */
+[data-theme="light"] {
+  --bg-app: #f4f5f8; /* 柔和浅灰 */
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-card-solid: #ffffff;
+  --bg-panel: rgba(248, 249, 250, 0.9);
+  --border-glass: rgba(0, 0, 0, 0.06);
+  --border-glass-active: rgba(0, 0, 0, 0.15);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  --shadow-glow: 0 0 20px rgba(0, 0, 0, 0.02);
+
+  /* 文本颜色 */
+  --text-primary: #111827; /* 深灰/黑 */
+  --text-secondary: #4b5563; /* 灰 */
+  --text-muted: #9ca3af; /* 浅灰 */
+  --text-inverse: #ffffff;
+
+  /* 其他辅助色 */
+  --color-active: #000000;
+  --color-danger: #ea580c;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  
+  --blur-amount: 20px;
+  --glass-effect: saturate(180%) blur(var(--blur-amount));
+}
