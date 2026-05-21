@@ -16,25 +16,25 @@ function habitTrackerPrecache() {
     closeBundle() {
       const distDir = path.join(rootDir, 'dist');
       const precache = new Set([
-        '/',
-        '/index.html',
-        '/manifest.json',
-        '/sw.js',
-        '/sw-precache.js',
-        '/assets/icons/badge.png',
-        '/assets/icons/icon-192x192.png',
-        '/assets/icons/icon-512x512.png',
+        './',
+        './index.html',
+        './manifest.json',
+        './sw.js',
+        './sw-precache.js',
+        './assets/icons/badge.png',
+        './assets/icons/icon-192x192.png',
+        './assets/icons/icon-512x512.png',
       ]);
 
       const indexPath = path.join(distDir, 'index.html');
       if (fs.existsSync(indexPath)) {
         let html = fs.readFileSync(indexPath, 'utf8');
-        for (const match of html.matchAll(/(?:src|href)="(\/[^"?#]+)"/g)) {
+        for (const match of html.matchAll(/(?:src|href)="(\.\/[^"?#]+)"/g)) {
           precache.add(match[1]);
         }
         html = html.replace(
-          /navigator\.serviceWorker\.register\(['"]\/sw\.js['"]/g,
-          "navigator.serviceWorker.register(new URL('sw.js', document.baseURI).href"
+          /navigator\.serviceWorker\.register\(['"].*?sw\.js['"]\)/g,
+          "navigator.serviceWorker.register(new URL('./sw.js', document.baseURI).href)"
         );
         fs.writeFileSync(indexPath, html);
       }
@@ -43,10 +43,10 @@ function habitTrackerPrecache() {
       if (fs.existsSync(assetsDir)) {
         for (const entry of fs.readdirSync(assetsDir, { withFileTypes: true })) {
           if (entry.isFile()) {
-            precache.add(`/assets/${entry.name}`);
+            precache.add(`./assets/${entry.name}`);
           } else if (entry.isDirectory() && entry.name === 'icons') {
             for (const icon of fs.readdirSync(path.join(assetsDir, 'icons'))) {
-              precache.add(`/assets/icons/${icon}`);
+              precache.add(`./assets/icons/${icon}`);
             }
           }
         }
