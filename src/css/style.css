@@ -51,6 +51,7 @@ textarea {
   body,
   #app {
     height: 100% !important;
+    min-height: -webkit-fill-available;
   }
 }
 
@@ -73,7 +74,7 @@ textarea {
   pointer-events: none;
   transform: translateY(15px);
   transition: opacity var(--transition-normal), transform var(--transition-normal);
-  padding: calc(12px + env(safe-area-inset-top, 0px)) 12px 80px;
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 12px calc(80px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
