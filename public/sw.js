@@ -66,14 +66,6 @@ async function hasCriticalShell(cache) {
     }
   }
 
-  const keys = await cache.keys();
-  for (const req of keys) {
-    const p = new URL(req.url).pathname;
-    if (p !== '/index.html' && p !== '/') continue;
-    const html = await (await cache.match(req)).text();
-    if (html.includes('id="app"') && html.length > 8000) return true;
-  }
-
   return false;
 }
 
