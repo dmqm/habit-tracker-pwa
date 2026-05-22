@@ -367,31 +367,6 @@
   100% { transform: scale(1); }
 }
 
-.habit-placeholder {
-  border: 2px dashed var(--border-glass-active);
-  border-radius: var(--radius-lg);
-  padding: 14px;
-  margin-bottom: var(--spacing-md);
-  cursor: pointer;
-  text-align: center;
-  background: var(--bg-card);
-  backdrop-filter: var(--glass-effect);
-  -webkit-backdrop-filter: var(--glass-effect);
-  box-shadow: var(--shadow-glass);
-  transition: border-color var(--transition-fast);
-}
-
-.habit-placeholder span {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.habit-placeholder:active {
-  border-color: var(--text-secondary);
-  transform: scale(0.99);
-}
-
 /* 5. 模态框 / 底部抽屉 (Modals) */
 .modal-overlay {
   position: absolute;
