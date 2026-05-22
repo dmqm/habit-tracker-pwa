@@ -628,14 +628,6 @@ export const ui = {
 
       container.appendChild(listDiv);
     });
-
-    const placeholder = document.createElement('div');
-    placeholder.className = 'habit-placeholder';
-    placeholder.innerHTML = '<span>+ 添加习惯</span>';
-    placeholder.addEventListener('click', () => {
-      this.openHabitModal();
-    });
-    container.appendChild(placeholder);
   },
 
   // 3. 渲染统计页面 (Stats View)
