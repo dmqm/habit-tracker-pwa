@@ -38,6 +38,8 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* 深色模式变量（默认） */
