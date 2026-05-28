@@ -34,10 +34,12 @@
         }
       } catch (e) {}
       if ('serviceWorker' in navigator) {
-        var hadController = !!navigator.serviceWorker.controller;
+        var oldController = navigator.serviceWorker.controller;
         navigator.serviceWorker.register(new URL('sw.js', document.baseURI).href, { updateViaCache: 'none' })
           .then(function () {
-            if (hadController) {
+            if (oldController && navigator.serviceWorker.controller !== oldController) {
+              location.reload();
+            } else if (oldController) {
               navigator.serviceWorker.addEventListener('controllerchange', function () {
                 location.reload();
               });

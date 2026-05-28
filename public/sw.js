@@ -145,8 +145,11 @@ async function respondFromCache(request) {
     if (!CACHE_ONLY) {
       try {
         const response = await fetch(request);
-        await putInCache(cache, request, response);
-        return response;
+        if (response.ok) {
+          await putInCache(cache, request, response);
+          return response;
+        }
+        console.warn('[Service Worker] 网络响应异常，回退缓存:', request.url, response.status);
       } catch (err) {
         console.warn('[Service Worker] 网络请求失败，回退缓存:', request.url, err);
       }
