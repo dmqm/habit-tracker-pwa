@@ -106,7 +106,7 @@ self.addEventListener('activate', (event) => {
 
 function offlineResponse() {
   return new Response(
-    '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小日常</title></head><body style="font-family:-apple-system,sans-serif;background:#08090d;color:#fff;padding:24px;text-align:center"><p>本地缓存未就绪</p><p style="color:#888;font-size:14px">请联网打开一次，待打卡页出现后再断网。</p><button onclick="location.reload()" style="margin-top:16px;padding:10px 20px">重试</button></body></html>',
+    '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小日常</title></head><body style="font-family:-apple-system,sans-serif;background:#08090d;color:#fff;padding:24px;text-align:center"><p>本地缓存未就绪</p><p style="color:#888;font-size:14px">请联网打开一次，待打卡页出现后再断网。</p><div style="margin-top:16px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button onclick="location.reload()" style="padding:10px 20px">重试</button><button onclick="caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}).then(function(){return navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))})}).then(function(){location.reload(true)})" style="padding:10px 20px">清缓存重启</button></div></body></html>',
     {
       status: 503,
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
@@ -139,6 +139,26 @@ async function matchCached(cache, request) {
 
 async function respondFromCache(request) {
   const cache = await caches.open(CACHE_NAME);
+  const isNavigate = request.mode === 'navigate' || request.destination === 'document';
+
+  if (isNavigate) {
+    if (!CACHE_ONLY) {
+      try {
+        const response = await fetch(request);
+        if (response.ok) {
+          await putInCache(cache, request, response);
+          return response;
+        }
+        console.warn('[Service Worker] 网络响应异常，回退缓存:', request.url, response.status);
+      } catch (err) {
+        console.warn('[Service Worker] 网络请求失败，回退缓存:', request.url, err);
+      }
+    }
+    const cached = await matchCached(cache, request);
+    if (cached) return cached;
+    return offlineResponse();
+  }
+
   const cached = await matchCached(cache, request);
   if (cached) return cached;
 
@@ -150,10 +170,6 @@ async function respondFromCache(request) {
     } catch (err) {
       console.warn('[Service Worker] 开发模式拉取失败:', request.url, err);
     }
-  }
-
-  if (request.mode === 'navigate' || request.destination === 'document') {
-    return offlineResponse();
   }
 
   return offlineResponse();
