@@ -34,7 +34,16 @@
         }
       } catch (e) {}
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register(new URL('sw.js', document.baseURI).href, { updateViaCache: 'none' }).catch(function () {});
+        var hadController = !!navigator.serviceWorker.controller;
+        navigator.serviceWorker.register(new URL('sw.js', document.baseURI).href, { updateViaCache: 'none' })
+          .then(function () {
+            if (hadController) {
+              navigator.serviceWorker.addEventListener('controllerchange', function () {
+                location.reload();
+              });
+            }
+          })
+          .catch(function () {});
       }
       window.addEventListener('load', function () {
         if (navigator.storage && navigator.storage.persist) {
