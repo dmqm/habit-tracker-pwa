@@ -403,7 +403,7 @@
   transition: transform var(--transition-spring);
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-lg) var(--spacing-lg) calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  padding: var(--spacing-lg) var(--spacing-lg) calc(var(--spacing-lg) + var(--safe-area-bottom));
   overflow-y: auto;
 }
 
@@ -887,7 +887,7 @@
 /* 8. 悬浮添加按钮 (Floating Add Button) */
 .fab-btn {
   position: absolute;
-  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(72px + var(--safe-area-bottom));
   right: var(--spacing-lg);
   width: 52px;
   height: 52px;
