@@ -1,20 +1,15 @@
 {
-  "name": "habit-tracker-pwa",
+  "name": "pwa-suite",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "description": "个人 PWA 工具集 monorepo",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview --port 8787 --host",
-    "start": "npm run build && vite preview --port 8787 --host"
-  },
-  "devDependencies": {
-    "vite": "^5.2.11",
-    "vite-plugin-singlefile": "^2.3.3"
-  },
-  "dependencies": {
-    "@noble/ciphers": "^2.2.0",
-    "@noble/hashes": "^2.2.0"
+    "build": "bash scripts/build-site.sh",
+    "build:habit": "npm run build --prefix habit-tracker-pwa",
+    "build:image": "npm run build --prefix image-hub-pwa",
+    "build:things": "npm run build --prefix my-things-pwa",
+    "dev:habit": "npm run dev --prefix habit-tracker-pwa",
+    "dev:image": "npm run dev --prefix image-hub-pwa",
+    "dev:things": "npm run dev --prefix my-things-pwa"
   }
 }

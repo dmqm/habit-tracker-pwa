@@ -1,0 +1,17 @@
+{
+  "short_name": "ImageHub",
+  "name": "ImageHub - 智能搜图与图像处理 Studio",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0a0a16",
+  "theme_color": "#6366f1",
+  "display": "standalone",
+  "orientation": "portrait-primary"
+}

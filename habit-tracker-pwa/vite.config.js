@@ -82,6 +82,7 @@ function habitTrackerPrecache() {
 }
 
 export default defineConfig({
+  base: './',
   plugins: [
     viteSingleFile({ useRecommendedBuildConfig: true }),
     {
