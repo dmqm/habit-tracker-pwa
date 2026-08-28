@@ -1,26 +1,26 @@
 {
-  "id": "habit-tracker-local",
-  "name": "小日常打卡",
-  "short_name": "小日常",
-  "description": "纯本地习惯打卡：无服务器，加载一次后可断网使用。",
+  "name": "应用中心 - PWA Hub",
+  "short_name": "应用中心",
+  "description": "聚合小日常、我的物品、ImageHub 等本地 PWA 应用的一站式入口",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#08090d",
-  "theme_color": "#08090d",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
+  "background_color": "#f2f2f7",
+  "theme_color": "#007aff",
+  "categories": ["utilities", "productivity"],
   "icons": [
     {
-      "src": "./assets/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "./assets/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }
